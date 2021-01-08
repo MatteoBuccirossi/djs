@@ -1,16 +1,16 @@
 {
-  "name": "templateStd",
+  "name": "templatecommands",
   "version": "1.0.0",
   "description": "A discord bot built with the djs cli",
-  "main": "standard.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "discord.js": "^12.5.1",
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "esm": "^3.2.25"
   }
 }
