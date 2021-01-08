@@ -1,4 +1,4 @@
-import fs from 'fs';
+const fs = require('fs');
 import chalk from 'chalk';
 import ncp from 'ncp';
 import path from 'path';
@@ -8,26 +8,40 @@ import Listr from 'listr';
 import { projectInstall } from 'pkg-install';
 
 const os = require('os');
-
-
-const access = promisify(fs.access);
 const copy = promisify(ncp);
 
 async function copyTemplate(options){
     return copy(path.join(__dirname, options.command ? 'templateCommand' : 'templateStd'), options.targetDirectory, {
         clobber: false,
+    }).catch(e=>{
+        if(e){
+            throw new Error(e);
+        }
     });
 }
 
 async function makeNewDirectory(name){
-    let newDir = path.join(os.homedir(), name);
+    if(!fs.existsSync(path.join(os.homedir(), 'djsBots'))){
+        fs.mkdir(path.join(os.homedir(), 'djsBots'), (e)=>{
+            if(e){
+                throw new Error(e);
+            }
+        });
+    }
+    let newDir = path.join(os.homedir(),'djsBots', name);
     await fs.mkdir(newDir, (e)=>{
         if(e){
             throw new Error(e);
         }
     });
-
     return newDir;
+}
+
+async function copyNameToJSON(options){
+    const packagePath = path.join(options.targetDirectory,  'package.json');
+    const pac = JSON.parse(fs.readFileSync(packagePath));
+    pac.name = options.name;
+    fs.writeFileSync(packagePath, JSON.stringify(pac));
 }
 
 export async function createBot(options){
@@ -39,6 +53,7 @@ export async function createBot(options){
     };
 
     let tasks = new Listr([
+     
         {
             title: 'Creating project directory',
             task: ()=> copyTemplate(options),
@@ -48,9 +63,13 @@ export async function createBot(options){
             task: ()=> projectInstall({
                 cwd: targetDir
             })
+        },
+        {
+            title: 'Updating package.json',
+            task: ()=> copyNameToJSON(options),
         }
     ]);
     await tasks.run();
-    console.log('%s Created project!', chalk.green.bold('DONE'));
+    console.log("%s Created project in your homepath's djsBots folder!", chalk.green.bold('DONE'));
 }
 

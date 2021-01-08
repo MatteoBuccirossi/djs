@@ -1,7 +1,7 @@
 {
   "name": "templateStd",
   "version": "1.0.0",
-  "description": "",
+  "description": "A discord bot built with the djs cli",
   "main": "standard.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

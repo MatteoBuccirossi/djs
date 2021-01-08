@@ -63,6 +63,7 @@ export async function cli(args){
                 await createBot(options);
             }catch(e){
                 console.log(chalk.red(e));
+                process.exit(1);
             }
     }
 
