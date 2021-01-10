@@ -6,6 +6,7 @@ const chalk = require('chalk');
 
 
 import {createBot} from './addNew';
+import {generateCommand} from './generate';
 
 function parseNewArgs(rawArgs){
     const args = arg(
@@ -122,11 +123,21 @@ export async function cli(args){
                 console.log(chalk.red(e));
                 process.exit(1);
             }
-        case 'generate' || 'g':
+        case 'generate':
             try{
                 let options = parseGenArgs(args);
                 options= await promptForMissingArgs(options, 'g');
-                console.log(options);
+                await generateCommand(options);
+                break;
+            }catch(e){
+                console.log(chalk.red(e));
+                process.exit(1);
+            }
+        case 'g':
+            try{
+                let options = parseGenArgs(args);
+                options= await promptForMissingArgs(options, 'g');
+                await generateCommand(options);
                 break;
             }catch(e){
                 console.log(chalk.red(e));
