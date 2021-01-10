@@ -22,7 +22,10 @@ Use the node package manager [npm](https://www.npmjs.com/package/djs-cli) to ins
 npm i -g djs-cli
 ```
 
-## Usage
+## Usage 
+
+**Create a new bot**:
+
 To create a new bot directory run :
 ```bash
 djs new -n <name>
@@ -34,6 +37,20 @@ djs new -n <name> -c
 All bots created with this package include a help command, while if you choose to include premade moderation commands as well, prebuilt kick and ban commands will be automatically programmed into your bot.
 
 All bots are saved in a folder called djsBots in your system's homepath.
+
+**Add a command to an existing bot:**
+
+This works only in directories created with the djs cli.
+
+To add a new command to your bot, in you bot's directory run:
+```bash
+djs generate (or just 'g') -n <name>
+```
+Use the -m flag to mark it as a moderation command:
+```bash
+djs generate -n <name> -m
+```
+Commands added this way will be automatically saved either in your bot's command directory, if it isn't a moderation command, or in the commands/moderationCommands directory.
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
