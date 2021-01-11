@@ -34,7 +34,7 @@ Use the -c flag to include premade bot commands:
 ```bash
 djs new -n <name> -c
 ```
-All bots created with this package include a help command, while if you choose to include premade moderation commands as well, prebuilt kick and ban commands will be automatically programmed into your bot.
+All bots created with this package include a help command, while if you choose to include premade moderation commands as well, prebuilt kick and ban commands will be automatically programmed into your bot. In your bot's directory you will find a .env file where you'll need to write the bot token provided by discord.
 
 All bots are saved in a folder called djsBots in your system's homepath.
 
