@@ -57,10 +57,14 @@ export async function createBot(options){
     };
 
     let tasks = new Listr([
-     
+
         {
             title: 'Creating project directory',
             task: ()=> copyTemplate(options),
+        },
+        {
+            title: 'Updating package.json',
+            task: ()=> copyNameToJSON(options),
         },
         {
             title: 'Initializing directory',
@@ -68,10 +72,7 @@ export async function createBot(options){
                 cwd: targetDir
             })
         },
-        {
-            title: 'Updating package.json',
-            task: ()=> copyNameToJSON(options),
-        }
+
     ]);
     await tasks.run();
     console.log("%s Created project in your homepath's djsBots folder!", chalk.green.bold('DONE'));
