@@ -39,9 +39,13 @@ async function makeNewDirectory(name){
 
 async function copyNameToJSON(options){
     const packagePath = path.join(options.targetDirectory,  'package.json');
-    const pac = JSON.parse(fs.readFileSync(packagePath));
-    pac.name = options.name;
-    fs.writeFileSync(packagePath, JSON.stringify(pac));
+    const pack = fs.readFileSync(packagePath, 'utf-8');
+    const updatedPack = pack.replace('templatecommands', options.name)
+    fs.writeFileSync(packagePath, updatedPack, (e)=>{
+        if(e){
+            throw new Error(e);
+        }
+    });
 }
 
 export async function createBot(options){
