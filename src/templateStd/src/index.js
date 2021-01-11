@@ -1,7 +1,10 @@
+const helpcmd = require('./commands/help');
+//your bot commands
+
 require('dotenv').config();
 const discord = require('discord.js');
 const helper = require('./helper')
-const helpcmd = require('./commands/help');
+
 
 
 

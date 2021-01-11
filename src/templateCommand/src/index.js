@@ -1,9 +1,12 @@
-require('dotenv').config();
-const discord = require('discord.js');
-const helper = require('./helper')
 const helpcmd = require('./commands/help');
 const ban = require('./commands/moderationCommands/ban');
 const kick = require('./commands/moderationCommands/kick');
+//your bot commands
+
+require('dotenv').config();
+const discord = require('discord.js');
+const helper = require('./helper')
+
 
 
 const bot = new discord.Client();

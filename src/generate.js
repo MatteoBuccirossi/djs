@@ -35,6 +35,32 @@ async function writeNewCommand(options){
     });
 }
 
+async function importCommand(options){
+    const index = fs.readFileSync(path.join(process.cwd(), 'src', 'index.js'),'utf-8');
+    const imported = `const ${options.name} = require('./${options.moderation ? 'commands/moderationCommands/': 'commands/'}${options.name}');
+` + index; 
+    fs.writeFileSync(path.join(process.cwd(), 'src', 'index.js'), imported, (e)=>{
+        if(e){
+            throw new Error(e);
+        }
+    });
+
+}
+
+//this function is here because of problems with the linux os
+async function moderationCommandsSingleton(options){
+    const exists = fs.existsSync(path.join(process.cwd(), 'src', 'commands', 'moderationCommands'));
+    if(exists){
+        return;
+    }else{
+        fs.mkdirSync(path.join(process.cwd(), 'src', 'commands', 'moderationCommands'), (e)=>{
+            if(e){
+                throw new Error(e);
+            }
+        })
+    }
+}
+
 async function isDjsBotDirectory(){
     return fs.existsSync(path.join(process.cwd(), 'src', 'commands'));
 }
@@ -47,8 +73,21 @@ export async function generateCommand(options){
     if(await isDjsBotDirectory()){
         let tasks = new Listr([
             {
+                title: 'Checking for moderation directory',
+                skip: () => {
+                    if(!options.moderation){
+                        return "Skipping because this isn't a moderation command";
+                    }
+                },
+                task: ()=> moderationCommandsSingleton(options)
+            },
+            {
                 title: 'Creating new command',
-                task: ()=> writeNewCommand(options),
+                task: ()=> writeNewCommand(options)
+            },
+            {
+                title: 'Updating imports in index.js',
+                task: ()=> importCommand(options)
             }
         ]);
         await tasks.run();
